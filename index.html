@@ -210,6 +210,57 @@
     margin-bottom: 4px;
   }
 
+  /* 料金 */
+  .price-card { padding: 32px 24px; }
+  .price {
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .price-card ul.checks { margin-bottom: 24px; }
+
+  /* FAQ */
+  dl.faq { margin: 0; }
+  dl.faq dt {
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 40px 0 12px;
+  }
+  dl.faq dt::before { content: "Q. "; color: var(--accent); }
+  dl.faq dd { margin: 0; }
+
+  /* フォーム */
+  .field { margin-bottom: 24px; }
+  .field label {
+    display: block;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: 14px 16px;
+    font-family: inherit;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--ink);
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    border-color: var(--accent);
+  }
+  a { color: var(--accent); }
+
   /* スクロール連動フェードイン */
   .fade {
     opacity: 0;
@@ -335,6 +386,80 @@
     </ol>
   </section>
 
+  <!-- 8. 料金 -->
+  <section class="fade">
+    <h2>料金</h2>
+    <div class="card price-card">
+      <p class="price">月額 40,000円(税込)</p>
+      <p class="small">固定・追加課金なし</p>
+      <ul class="checks">
+        <li>日英中韓4言語対応</li>
+        <li>新着レビューへの返信文作成</li>
+        <li>ご確認後の投稿代行</li>
+        <li>月次レポート</li>
+      </ul>
+      <p style="margin:0">ご契約は月単位。初期費用はありません。</p>
+    </div>
+  </section>
+
+  <!-- 9. FAQ -->
+  <section class="fade">
+    <h2>よくあるご質問</h2>
+    <dl class="faq">
+      <dt>実績はまだ少ないのでは?</dt>
+      <dd>2026年7月に開業したばかりです。だからこそ、最初の1件は無料で書き、品質をご覧いただいてからご判断いただく形にしています。</dd>
+      <dt>うちの宿の言葉遣いに合いますか?</dt>
+      <dd>これまでの返信やパンフレットの文面を拝見し、トーンを合わせます。初稿には修正のご要望を反映します。</dd>
+      <dt>途中でやめられますか?</dt>
+      <dd>ご契約は1ヶ月単位で、いつでも解約いただけます。縛りはありません。</dd>
+      <dt>クチコミの操作はしてもらえますか?</dt>
+      <dd>いたしません。クチコミの捏造・削除依頼の代行・評価の操作は、Google のポリシーと法令に反するためお受けできません。届いたクチコミに誠実に返信することだけを行います。</dd>
+    </dl>
+  </section>
+
+  <!-- 10. 最終CTA+フォーム -->
+  <section class="fade" id="contact">
+    <h2>まず1件、無料で書いてみます</h2>
+    <p>品質を見てから決めてください。営業のお電話は一切いたしません。</p>
+    <form id="sample-form">
+      <div class="field">
+        <label for="f-name">施設名(必須)</label>
+        <input type="text" id="f-name" name="name" required autocomplete="organization">
+      </div>
+      <div class="field">
+        <label for="f-email">メールアドレス(必須)</label>
+        <input type="email" id="f-email" name="email" required autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="f-note">気になっているクチコミ・ひとこと(任意)</label>
+        <textarea id="f-note" name="note" rows="4"></textarea>
+      </div>
+      <button type="submit" class="btn-cta">無料で返信サンプルを受け取る</button>
+    </form>
+    <p class="small" style="margin-top:16px">送信ボタンを押すと、お使いのメールソフトが内容入りで開きます。フォームが動作しない場合は <a href="mailto:harumi@guest-reply.jp">harumi@guest-reply.jp</a> へ施設名を添えてご連絡ください。</p>
+    <p>24時間以内に、徳山が直接ご返信します。</p>
+  </section>
+
 </main>
+<script>
+  (function () {
+    var form = document.getElementById('sample-form');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = document.getElementById('f-name').value.trim();
+      var email = document.getElementById('f-email').value.trim();
+      var note = document.getElementById('f-note').value.trim();
+      var subject = '【無料返信サンプル希望】' + name;
+      var body =
+        '施設名: ' + name + '\n' +
+        'メールアドレス: ' + email + '\n' +
+        '気になっているクチコミ・ひとこと:\n' +
+        (note !== '' ? note : '(未記入)') + '\n';
+      window.location.href = 'mailto:harumi@guest-reply.jp'
+        + '?subject=' + encodeURIComponent(subject)
+        + '&body=' + encodeURIComponent(body);
+    });
+  })();
+</script>
 </body>
 </html>
