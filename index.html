@@ -124,6 +124,92 @@
   }
   .stat p { margin-bottom: 4px; }
 
+  /* 返信サンプル */
+  .sample-label { margin-bottom: 16px; }
+  .sample-review {
+    color: var(--sub);
+    border-left: 3px solid var(--line);
+    padding-left: 16px;
+    margin-bottom: 16px;
+  }
+  .sample-reply { margin-bottom: 12px; }
+  .sample .small { margin-bottom: 0; }
+
+  /* 運営者 */
+  .owner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  @media (min-width: 600px) {
+    .owner { flex-direction: row; }
+  }
+  .owner-photo {
+    flex: none;
+    width: 120px;
+    height: 120px;
+  }
+  .owner-photo img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+  }
+  .owner-fallback {
+    display: none;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #FFFFFF;
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 48px;
+    align-items: center;
+    justify-content: center;
+  }
+  .owner-photo.no-photo img { display: none; }
+  .owner-photo.no-photo .owner-fallback { display: flex; }
+  .owner-name {
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  /* プロセス */
+  ol.process {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  @media (min-width: 600px) {
+    ol.process { flex-direction: row; }
+    ol.process li { flex: 1; }
+  }
+  ol.process li {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 16px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  ol.process li.step-key {
+    border: 2px solid var(--accent);
+  }
+  .step-no {
+    display: block;
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
   /* スクロール連動フェードイン */
   .fade {
     opacity: 0;
@@ -179,6 +265,74 @@
       <p class="small">出典: 同調査</p>
     </div>
     <p>返信を読んでいるのは投稿者だけではありません。これから予約するお客様と、海外からの旅行者です。</p>
+  </section>
+
+  <!-- 4. サービス内容 -->
+  <section class="fade">
+    <h2>サービス内容</h2>
+    <p>Guest Reply は、御宿の Google マップに届くレビューへの返信を代行するサービスです。</p>
+    <ul class="checks">
+      <li>対応対象は Google マップのレビュー。日・英・中・韓の4言語で返信文を作成します</li>
+      <li>新着レビューに24〜48時間以内に返信文を作成します</li>
+      <li>返信文は投稿前に必ずご確認いただきます(勝手に投稿しません)。ご確認後の投稿までを代行します</li>
+      <li>月次レポートで返信状況をご報告します</li>
+    </ul>
+    <div class="note-box">
+      <p style="margin:0">AIで下書きを作り、最後は必ず人が全文に手を入れて、宿ごとの言葉遣いに合わせます。</p>
+    </div>
+  </section>
+
+  <!-- 5. 返信サンプル -->
+  <section class="fade">
+    <h2>返信の実物を、先にご覧ください</h2>
+
+    <div class="card sample">
+      <p class="sample-label small">サンプル1: 英語クチコミへの返信 ※見本です</p>
+      <p class="sample-review">Beautiful traditional room and amazing breakfast. The owner was very kind despite the language barrier.</p>
+      <p class="sample-reply">Thank you very much for staying with us. We are delighted that you enjoyed the room and breakfast. Although our English is limited, we always hope our hospitality reaches our guests beyond words. Your kind review means a great deal to us. We would be honored to welcome you again.</p>
+      <p class="small">訳: このたびはご宿泊いただき誠にありがとうございます。お部屋と朝食をお楽しみいただけて嬉しく思います。英語は不慣れですが、言葉を越えておもてなしの心が届くことをいつも願っております。温かいご感想に心より感謝いたします。またのお越しをお待ちしております。</p>
+    </div>
+
+    <div class="card sample">
+      <p class="sample-label small">サンプル2: 低評価(日本語)への返信 ※見本です</p>
+      <p class="sample-review">部屋は良かったが、チェックイン時に待たされた。説明も慌ただしく残念。</p>
+      <p class="sample-reply">このたびはご宿泊いただいたにもかかわらず、チェックインの際にお待たせしてしまい、申し訳ございませんでした。ご到着が重なる時間帯のご案内の手順を見直しております。お部屋にお褒めの言葉をいただけたことが、せめてもの救いです。次の機会がございましたら、最初のご案内から気持ちよくお過ごしいただけるよう努めてまいります。</p>
+    </div>
+
+    <div class="card sample">
+      <p class="sample-label small">サンプル3: 中国語クチコミへの返信 ※見本です</p>
+      <p class="sample-review">房间很干净,温泉也很舒服。老板娘很亲切。</p>
+      <p class="sample-reply">非常感谢您这次入住本馆。得知您对房间和温泉都很满意,我们十分高兴。您的暖心留言是我们最大的鼓励。期待有机会再次迎接您的光临。</p>
+      <p class="small">訳: このたびはご宿泊いただき誠にありがとうございます。お部屋と温泉にご満足いただけたと伺い、大変嬉しく思います。温かいお言葉が何よりの励みです。またお迎えできる日を楽しみにしております。</p>
+    </div>
+  </section>
+
+  <!-- 6. 運営者について -->
+  <section class="fade">
+    <h2>返信を書いているのは、こういう者です</h2>
+    <div class="owner">
+      <div class="owner-photo">
+        <img src="assets/owner.jpg" alt="徳山 晴海の写真">
+        <div class="owner-fallback" aria-hidden="true">徳</div>
+      </div>
+      <div class="owner-body">
+        <p class="owner-name">徳山 晴海(個人事業 Guest Reply)</p>
+        <p class="small">所在地: 宮城県仙台市</p>
+        <!-- PO: 運営者紹介文をここに -->
+        <p>宮城県仙台市で情報サービス業を営んでいます。(紹介文は準備中です)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. プロセスの透明化 -->
+  <section class="fade">
+    <h2>返信文ができるまで</h2>
+    <ol class="process">
+      <li><span class="step-no">1</span>新着レビューの検知</li>
+      <li><span class="step-no">2</span>AIで下書き</li>
+      <li class="step-key"><span class="step-no">3</span>人が全文を推敲・宿のトーンに調整</li>
+      <li><span class="step-no">4</span>ご確認のうえ投稿</li>
+    </ol>
   </section>
 
 </main>
