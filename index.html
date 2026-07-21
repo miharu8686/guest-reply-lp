@@ -195,12 +195,18 @@
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 6px;
-    padding: 16px;
+    padding: 16px 12px;
     font-size: 16px;
     line-height: 1.6;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
   }
-  ol.process li.step-key {
-    border: 2px solid var(--accent);
+  ol.process .ph { display: inline-block; }
+  .process-note {
+    margin-top: 24px;
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 18px;
+    color: var(--accent);
   }
   .step-no {
     display: block;
@@ -405,11 +411,12 @@
   <section class="fade">
     <h2>返信文ができるまで</h2>
     <ol class="process">
-      <li><span class="step-no">1</span>新着レビューの検知</li>
-      <li><span class="step-no">2</span>AIで下書き</li>
-      <li class="step-key"><span class="step-no">3</span>人が全文を推敲・宿のトーンに調整</li>
-      <li><span class="step-no">4</span>ご確認のうえ投稿</li>
+      <li><span class="step-no">1</span><span class="ph">新着レビューの</span><span class="ph">検知</span></li>
+      <li><span class="step-no">2</span><span class="ph">AIで下書き</span></li>
+      <li><span class="step-no">3</span><span class="ph">人が全文を推敲・</span><span class="ph">宿のトーンに調整</span></li>
+      <li><span class="step-no">4</span><span class="ph">ご確認のうえ</span><span class="ph">投稿</span></li>
     </ol>
+    <p class="process-note">3番目の工程を人が行うことが、このサービスの中身です。</p>
   </section>
 
   <!-- 8. 料金 -->
