@@ -102,6 +102,28 @@
     font-weight: 700;
   }
 
+  /* ファーストビュー */
+  .fv { margin-top: 0; }
+  .fv-greeting { margin-bottom: 40px; }
+  .fv h1 { margin-bottom: 24px; }
+  .fv-sub { margin-bottom: 40px; }
+  .fv-cta { margin: 0; }
+
+  /* データ */
+  .stat {
+    border-left: 3px solid var(--accent);
+    padding: 4px 0 4px 20px;
+    margin: 0 0 32px;
+  }
+  .stat-figure {
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0 0 4px;
+  }
+  .stat p { margin-bottom: 4px; }
+
   /* スクロール連動フェードイン */
   .fade {
     opacity: 0;
@@ -124,6 +146,41 @@
 </head>
 <body>
 <main>
+
+  <!-- 1. ファーストビュー -->
+  <section class="fv" id="top">
+    <p class="fv-greeting small">メールからお越しいただき、ありがとうございます</p>
+    <h1>外国語のクチコミに、<br>返せていますか。</h1>
+    <p class="fv-sub">Google マップに届くレビューへの返信を、日本語・英語・中国語・韓国語で。仙台の個人事業 Guest Reply が、一件ずつ手で書きます。月額40,000円・固定。</p>
+    <p class="fv-cta"><a class="btn-cta" href="#contact">まず1件、無料で返信を書いてみます →</a></p>
+  </section>
+
+  <!-- 2. 共感 -->
+  <section class="fade">
+    <h2>返信、後回しになっていませんか</h2>
+    <ul class="checks">
+      <li>英語や中国語のクチコミが、読めないまま溜まっている</li>
+      <li>翻訳アプリで読めても、返す言葉が出てこない</li>
+      <li>厳しい指摘に、角を立てずに返す言い回しが分からない</li>
+    </ul>
+  </section>
+
+  <!-- 3. なぜ返信が効くのか -->
+  <section class="fade">
+    <h2>なぜ、返信が大切なのか</h2>
+    <div class="stat">
+      <p class="stat-figure">約91%</p>
+      <p>宿泊予約時にクチコミを参考にする人の割合です。</p>
+      <p class="small">出典: 口コミコム調査(2025年)</p>
+    </div>
+    <div class="stat">
+      <p class="stat-figure">45.1%</p>
+      <p>ネガティブなクチコミがあっても、施設からの丁寧な返信があれば予約するという人の割合です。</p>
+      <p class="small">出典: 同調査</p>
+    </div>
+    <p>返信を読んでいるのは投稿者だけではありません。これから予約するお客様と、海外からの旅行者です。</p>
+  </section>
+
 </main>
 </body>
 </html>
