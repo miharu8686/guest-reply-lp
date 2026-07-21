@@ -5,115 +5,534 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Guest Reply(ゲストリプライ)| 宿泊施設のための、Googleレビュー多言語返信サービス</title>
 <meta name="description" content="宿泊施設のための、Googleレビュー多言語返信サービス。日・英・中・韓の4言語で返信文を作成し、ご確認いただいた上で投稿までを代行します。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --accent: #0f766e;
-    --text: #1f2937;
-    --muted: #6b7280;
-    --line: #e5e7eb;
+    --bg: #F7F5F0;        /* 生成り */
+    --ink: #1A1A1A;       /* 濃墨 */
+    --accent: #2E4A62;    /* 藍 */
+    --accent-cta: #9C3D2E;/* 臙脂: CTAボタンのみ */
+    --sub: #6B6B6B;       /* キャプション */
+    --line: #E0DCD2;
+    --card: #FFFFFF;
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     margin: 0;
-    color: var(--text);
-    background: #fff;
-    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans",
-      "Yu Gothic", "游ゴシック", Meiryo, sans-serif;
-    line-height: 1.9;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+    font-size: 18px;
+    line-height: 1.75;
     -webkit-text-size-adjust: 100%;
   }
   main {
     max-width: 720px;
     margin: 0 auto;
-    padding: 48px 24px 64px;
+    padding: 40px 24px 96px;
   }
-  .logo {
-    color: var(--accent);
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    font-size: 1rem;
-    margin-bottom: 40px;
-  }
-  h1 {
-    font-size: 1.6rem;
+  h1, h2, h3 {
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
     line-height: 1.5;
-    margin: 0 0 8px;
+    margin: 0 0 24px;
   }
-  .tagline {
-    color: var(--muted);
-    margin: 0 0 48px;
-  }
-  h2 {
-    font-size: 1.1rem;
-    color: var(--accent);
-    border-bottom: 2px solid var(--accent);
-    padding-bottom: 6px;
-    margin: 56px 0 20px;
-  }
+  h1 { font-size: 40px; font-weight: 600; }
+  h2 { font-size: 32px; font-weight: 600; }
+  h3 { font-size: 24px; font-weight: 500; }
   p { margin: 0 0 16px; }
-  ul {
-    padding-left: 0;
+  section { margin-top: 88px; }
+  .small { font-size: 14px; color: var(--sub); }
+
+  /* CTAボタン(臙脂はここだけ) */
+  .btn-cta {
+    display: block;
+    width: 100%;
+    min-height: 56px;
+    padding: 15px 32px;
+    background: var(--accent-cta);
+    color: #FFFFFF;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  @media (min-width: 600px) {
+    .btn-cta { display: inline-block; width: auto; }
+  }
+
+  /* カード・強調枠 */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 24px;
+    margin: 0 0 24px;
+  }
+  .note-box {
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 32px 0 0;
+  }
+
+  /* チェックリスト */
+  ul.checks {
     list-style: none;
+    padding: 0;
     margin: 24px 0;
   }
-  li {
-    padding: 10px 0 10px 28px;
-    border-bottom: 1px solid var(--line);
+  ul.checks li {
     position: relative;
+    padding: 12px 0 12px 32px;
+    border-bottom: 1px solid var(--line);
   }
-  li::before {
+  ul.checks li::before {
     content: "✓";
-    color: var(--accent);
     position: absolute;
     left: 4px;
-    font-weight: 700;
-  }
-  .price {
-    font-size: 1.5rem;
-    font-weight: 700;
     color: var(--accent);
-    margin: 8px 0;
+    font-weight: 700;
   }
-  footer {
-    margin-top: 64px;
-    padding-top: 24px;
-    border-top: 1px solid var(--line);
-    font-size: 0.9rem;
-    color: var(--muted);
+
+  /* ファーストビュー */
+  .fv { margin-top: 0; }
+  .fv-greeting { margin-bottom: 40px; }
+  .fv h1 { margin-bottom: 24px; }
+  .fv-sub { margin-bottom: 40px; }
+  .fv-cta { margin: 0; }
+
+  /* データ */
+  .stat {
+    border-left: 3px solid var(--accent);
+    padding: 4px 0 4px 20px;
+    margin: 0 0 32px;
   }
-  footer p { margin: 0 0 12px; }
+  .stat-figure {
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0 0 4px;
+  }
+  .stat p { margin-bottom: 4px; }
+
+  /* 返信サンプル */
+  .sample-label { margin-bottom: 16px; }
+  .sample-review {
+    color: var(--sub);
+    border-left: 3px solid var(--line);
+    padding-left: 16px;
+    margin-bottom: 16px;
+  }
+  .sample-reply { margin-bottom: 12px; }
+  .sample .small { margin-bottom: 0; }
+
+  /* 運営者 */
+  .owner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  @media (min-width: 600px) {
+    .owner { flex-direction: row; }
+  }
+  .owner-photo {
+    flex: none;
+    width: 120px;
+    height: 120px;
+  }
+  .owner-photo img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+  }
+  .owner-fallback {
+    display: none;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #FFFFFF;
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 48px;
+    align-items: center;
+    justify-content: center;
+  }
+  .owner-photo.no-photo img { display: none; }
+  .owner-photo.no-photo .owner-fallback { display: flex; }
+  .owner-name {
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  /* プロセス */
+  ol.process {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  @media (min-width: 600px) {
+    ol.process { flex-direction: row; }
+    ol.process li { flex: 1; }
+  }
+  ol.process li {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 16px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  ol.process li.step-key {
+    border: 2px solid var(--accent);
+  }
+  .step-no {
+    display: block;
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  /* 料金 */
+  .price-card { padding: 32px 24px; }
+  .price {
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .price-card ul.checks { margin-bottom: 24px; }
+
+  /* FAQ */
+  dl.faq { margin: 0; }
+  dl.faq dt {
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 40px 0 12px;
+  }
+  dl.faq dt::before { content: "Q. "; color: var(--accent); }
+  dl.faq dd { margin: 0; }
+
+  /* フォーム */
+  .field { margin-bottom: 24px; }
+  .field label {
+    display: block;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .field input,
+  .field textarea {
+    width: 100%;
+    padding: 14px 16px;
+    font-family: inherit;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--ink);
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    border-color: var(--accent);
+  }
   a { color: var(--accent); }
+
+  /* フッター */
+  footer {
+    margin-top: 96px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--sub);
+  }
+  footer p { margin-bottom: 16px; }
+
+  /* モバイル追従CTAバー */
+  .cta-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: rgba(247, 245, 240, 0.96);
+    border-top: 1px solid var(--line);
+  }
+  @media (min-width: 720px) {
+    .cta-bar { display: none; }
+  }
+
+  /* スクロール連動フェードイン */
+  .fade {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .fade {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
 </style>
 </head>
 <body>
 <main>
-  <div class="logo">Guest Reply</div>
 
-  <h1>Guest Reply(ゲストリプライ)</h1>
-  <p class="tagline">宿泊施設のための、Googleレビュー多言語返信サービス</p>
+  <!-- 1. ファーストビュー -->
+  <section class="fv" id="top">
+    <p class="fv-greeting small">メールからお越しいただき、ありがとうございます</p>
+    <h1>その返信を読んでいるのは、<br>次に予約するお客様です。</h1>
+    <p class="fv-sub">海外のゲストは、予約前に施設の応対を読んでいます。Google マップに届くレビューへの返信を、日本語・英語・中国語・韓国語で。仙台の個人事業 Guest Reply が、一件ずつ手で書きます。月額40,000円・固定。</p>
+    <p class="fv-cta"><a class="btn-cta" href="#contact">まず1件、無料で返信を書いてみます →</a></p>
+  </section>
 
-  <h2>サービス内容</h2>
-  <p>海外からのゲストによる外国語のクチコミ、返信できずに溜まっていませんか。</p>
-  <p>Guest Reply は、御宿の Google マップに届くレビューに対し、日本語・英語・中国語・韓国語で返信文を作成し、ご確認いただいた上で投稿までを代行するサービスです。</p>
-  <ul>
-    <li>新着レビューに 24〜48時間以内に返信文を作成</li>
-    <li>日・英・中・韓の4言語に対応</li>
-    <li>返信文は投稿前に必ずご確認いただきます(勝手に投稿しません)</li>
-    <li>月次レポートで返信状況をご報告</li>
-  </ul>
+  <!-- 2. 共感 -->
+  <section class="fade">
+    <h2>外国語のレビューには、こんな難しさがあります</h2>
+    <ul class="checks">
+      <li>英語や中国語のレビューは、内容を正確に読み取るだけで時間がかかります</li>
+      <li>翻訳できても、宿の言葉として返す言い回しは別の技術です</li>
+      <li>厳しい指摘への返信は、角を立てずに誠実さを伝える必要があります</li>
+    </ul>
+  </section>
 
-  <h2>料金</h2>
-  <p class="price">月額 40,000円(税込)</p>
-  <p>ご契約は月単位。初期費用はありません。</p>
+  <!-- 3. なぜ返信が効くのか -->
+  <section class="fade">
+    <h2>なぜ、返信が大切なのか</h2>
+    <div class="stat">
+      <p class="stat-figure">約91%</p>
+      <p>宿泊予約時にクチコミを参考にする人の割合です。</p>
+      <p class="small">出典: 口コミコム調査(2025年)</p>
+    </div>
+    <div class="stat">
+      <p class="stat-figure">45.1%</p>
+      <p>ネガティブなクチコミがあっても、施設からの丁寧な返信があれば予約するという人の割合です。</p>
+      <p class="small">出典: 同調査</p>
+    </div>
+    <p>返信を読んでいるのは投稿者だけではありません。これから予約するお客様と、海外からの旅行者です。</p>
+  </section>
 
+  <!-- 4. サービス内容 -->
+  <section class="fade">
+    <h2>サービス内容</h2>
+    <p>Guest Reply は、御宿の Google マップに届くレビューへの返信を代行するサービスです。</p>
+    <ul class="checks">
+      <li>対応対象は Google マップのレビュー。日・英・中・韓の4言語で返信文を作成します</li>
+      <li>新着レビューに24〜48時間以内に返信文を作成します</li>
+      <li>返信文は投稿前に必ずご確認いただきます(勝手に投稿しません)。ご確認後の投稿までを代行します</li>
+      <li>月次レポートで返信状況をご報告します</li>
+    </ul>
+    <div class="note-box">
+      <p style="margin:0">AIで下書きを作り、最後は必ず人が全文に手を入れて、宿ごとの言葉遣いに合わせます。</p>
+    </div>
+  </section>
+
+  <!-- 5. 返信サンプル -->
+  <section class="fade">
+    <h2>返信の実物を、先にご覧ください</h2>
+
+    <div class="card sample">
+      <p class="sample-label small">サンプル1: 英語クチコミへの返信 ※見本です</p>
+      <p class="sample-review">Beautiful traditional room and amazing breakfast. The owner was very kind despite the language barrier.</p>
+      <p class="sample-reply">Thank you very much for staying with us. We are delighted that you enjoyed the room and breakfast. Although our English is limited, we always hope our hospitality reaches our guests beyond words. Your kind review means a great deal to us. We would be honored to welcome you again.</p>
+      <p class="small">訳: このたびはご宿泊いただき誠にありがとうございます。お部屋と朝食をお楽しみいただけて嬉しく思います。英語は不慣れですが、言葉を越えておもてなしの心が届くことをいつも願っております。温かいご感想に心より感謝いたします。またのお越しをお待ちしております。</p>
+    </div>
+
+    <div class="card sample">
+      <p class="sample-label small">サンプル2: 低評価(日本語)への返信 ※見本です</p>
+      <p class="sample-review">部屋は良かったが、チェックイン時に待たされた。説明も慌ただしく残念。</p>
+      <p class="sample-reply">このたびはご宿泊いただいたにもかかわらず、チェックインの際にお待たせしてしまい、申し訳ございませんでした。ご到着が重なる時間帯のご案内の手順を見直しております。お部屋にお褒めの言葉をいただけたことが、せめてもの救いです。次の機会がございましたら、最初のご案内から気持ちよくお過ごしいただけるよう努めてまいります。</p>
+    </div>
+
+    <div class="card sample">
+      <p class="sample-label small">サンプル3: 中国語クチコミへの返信 ※見本です</p>
+      <p class="sample-review">房间很干净,温泉也很舒服。老板娘很亲切。</p>
+      <p class="sample-reply">非常感谢您这次入住本馆。得知您对房间和温泉都很满意,我们十分高兴。您的暖心留言是我们最大的鼓励。期待有机会再次迎接您的光临。</p>
+      <p class="small">訳: このたびはご宿泊いただき誠にありがとうございます。お部屋と温泉にご満足いただけたと伺い、大変嬉しく思います。温かいお言葉が何よりの励みです。またお迎えできる日を楽しみにしております。</p>
+    </div>
+  </section>
+
+  <!-- 6. 運営者について -->
+  <section class="fade">
+    <h2>返信を書いているのは、こういう者です</h2>
+    <div class="owner">
+      <div class="owner-photo">
+        <img src="assets/owner.jpg" alt="徳山 晴海の写真">
+        <div class="owner-fallback" aria-hidden="true">徳</div>
+      </div>
+      <div class="owner-body">
+        <p class="owner-name">徳山 晴海(個人事業 Guest Reply)</p>
+        <p class="small">所在地: 宮城県仙台市</p>
+        <p>宮城県仙台市で、業務の自動化を仕事にしています。本業では生成AIを使った業務改善を担当しており、その延長としてこのサービスを始めました。</p>
+        <p>宿泊業に長く携わってきたわけではありません。ただ、届いたレビューを読んで言葉を選ぶという作業には、機械に任せきりにしてはいけない部分が必ず残ると考えています。下書きはAIに作らせますが、投稿する文面は最後に必ず私が全文を読み、直しています。</p>
+        <p>ご不明な点は、私が直接お答えします。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. プロセスの透明化 -->
+  <section class="fade">
+    <h2>返信文ができるまで</h2>
+    <ol class="process">
+      <li><span class="step-no">1</span>新着レビューの検知</li>
+      <li><span class="step-no">2</span>AIで下書き</li>
+      <li class="step-key"><span class="step-no">3</span>人が全文を推敲・宿のトーンに調整</li>
+      <li><span class="step-no">4</span>ご確認のうえ投稿</li>
+    </ol>
+  </section>
+
+  <!-- 8. 料金 -->
+  <section class="fade">
+    <h2>料金</h2>
+    <div class="card price-card">
+      <p class="price">月額 40,000円(税込)</p>
+      <p class="small">固定・追加課金なし</p>
+      <ul class="checks">
+        <li>日英中韓4言語対応</li>
+        <li>新着レビューへの返信文作成</li>
+        <li>ご確認後の投稿代行</li>
+        <li>月次レポート</li>
+      </ul>
+      <p style="margin:0">ご契約は月単位。初期費用はありません。</p>
+    </div>
+  </section>
+
+  <!-- 9. FAQ -->
+  <section class="fade">
+    <h2>よくあるご質問</h2>
+    <dl class="faq">
+      <dt>実績はまだ少ないのでは?</dt>
+      <dd>2026年7月に開業したばかりです。だからこそ、最初の1件は無料で書き、品質をご覧いただいてからご判断いただく形にしています。</dd>
+      <dt>うちの宿の言葉遣いに合いますか?</dt>
+      <dd>これまでの返信やパンフレットの文面を拝見し、トーンを合わせます。初稿には修正のご要望を反映します。</dd>
+      <dt>途中でやめられますか?</dt>
+      <dd>ご契約は1ヶ月単位で、いつでも解約いただけます。縛りはありません。</dd>
+      <dt>クチコミの操作はしてもらえますか?</dt>
+      <dd>いたしません。クチコミの捏造・削除依頼の代行・評価の操作は、Google のポリシーと法令に反するためお受けできません。届いたクチコミに誠実に返信することだけを行います。</dd>
+    </dl>
+  </section>
+
+  <!-- 10. 最終CTA+フォーム -->
+  <section class="fade" id="contact">
+    <h2>まず1件、無料で書いてみます</h2>
+    <p>品質を見てから決めてください。営業のお電話は一切いたしません。</p>
+    <form id="sample-form">
+      <div class="field">
+        <label for="f-name">施設名(必須)</label>
+        <input type="text" id="f-name" name="name" required autocomplete="organization">
+      </div>
+      <div class="field">
+        <label for="f-email">メールアドレス(必須)</label>
+        <input type="email" id="f-email" name="email" required autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="f-note">気になっているクチコミ・ひとこと(任意)</label>
+        <textarea id="f-note" name="note" rows="4"></textarea>
+      </div>
+      <button type="submit" class="btn-cta">無料で返信サンプルを受け取る</button>
+    </form>
+    <p class="small" style="margin-top:16px">送信ボタンを押すと、お使いのメールソフトが内容入りで開きます。フォームが動作しない場合は <a href="mailto:harumi@guest-reply.jp">harumi@guest-reply.jp</a> へ施設名を添えてご連絡ください。</p>
+    <p>24時間以内に、徳山が直接ご返信します。</p>
+  </section>
+
+  <!-- 11. フッター -->
   <footer>
-    <h2>運営者</h2>
     <p>Guest Reply(ゲストリプライ)<br>
     運営: 徳山 晴海(個人事業)<br>
-    所在地: 宮城県<br>
-    お問い合わせ: <a href="mailto:harumi@guest-reply.jp">harumi@guest-reply.jp</a></p>
+    所在地: 宮城県仙台市<br>
+    <a href="mailto:harumi@guest-reply.jp">harumi@guest-reply.jp</a></p>
     <p>営業メールの配信停止をご希望の場合は、上記アドレスへ「配信不要」とご連絡ください。以後お送りいたしません。</p>
+    <p>&copy; 2026 Guest Reply</p>
   </footer>
+
 </main>
+
+<!-- モバイル追従CTAバー -->
+<div class="cta-bar">
+  <a class="btn-cta" href="#contact">無料で1件書いてみます →</a>
+</div>
+
+<script>
+  (function () {
+    var form = document.getElementById('sample-form');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = document.getElementById('f-name').value.trim();
+      var email = document.getElementById('f-email').value.trim();
+      var note = document.getElementById('f-note').value.trim();
+      var subject = '【無料返信サンプル希望】' + name;
+      var body =
+        '施設名: ' + name + '\n' +
+        'メールアドレス: ' + email + '\n' +
+        '気になっているクチコミ・ひとこと:\n' +
+        (note !== '' ? note : '(未記入)') + '\n';
+      window.location.href = 'mailto:harumi@guest-reply.jp'
+        + '?subject=' + encodeURIComponent(subject)
+        + '&body=' + encodeURIComponent(body);
+    });
+  })();
+
+  /* 運営者写真: assets/owner.jpg が無ければ藍色の円にフォールバック */
+  (function () {
+    var photo = document.querySelector('.owner-photo');
+    var img = photo.querySelector('img');
+    var toFallback = function () { photo.classList.add('no-photo'); };
+    if (img.complete && img.naturalWidth === 0) {
+      toFallback();
+    } else {
+      img.addEventListener('error', toFallback);
+    }
+  })();
+
+  /* スクロール連動フェードイン(prefers-reduced-motion時はCSS側で無効) */
+  (function () {
+    var targets = document.querySelectorAll('.fade');
+    if (!('IntersectionObserver' in window)
+        || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      targets.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -40px 0px' });
+    targets.forEach(function (el) { observer.observe(el); });
+  })();
+</script>
 </body>
 </html>
